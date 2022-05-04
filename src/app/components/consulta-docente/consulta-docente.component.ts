@@ -27,32 +27,25 @@ export class ConsultaDocenteComponent implements OnInit {
   //Grila
   docentes: Docente[] = [];
 
-  constructor(private ubigeoService: UbigeoService, 
-              private docenteService:DocenteService) { 
-
-    ubigeoService.listarDepartamento().subscribe(
-        (x) => this.departamentos = x
-    );
-
+  constructor(private ubigeoService: UbigeoService,private docenteService:DocenteService) { 
+      ubigeoService.listarDepartamento().subscribe(
+          (x) => this.departamentos = x
+      );
   }
 
   cargaProvincia(){
-    this.ubigeoService.listaProvincias(this.selDepartamento).subscribe(
-          (x)  => this.provincias = x      
-    );
-
-    
-    this.selProvincia = "-1";
-    this.distritos = [];
-    this.selDistrito = -1;
-
+      this.ubigeoService.listaProvincias(this.selDepartamento).subscribe(
+            (x)  => this.provincias = x      
+      );
+      this.selProvincia = "-1";
+      this.distritos = [];
+      this.selDistrito = -1;
   }
   cargaDistrito(){
-    this.ubigeoService.listaDistritos(this.selDepartamento, this.selProvincia).subscribe(
-          (x)  => this.distritos = x      
-    );
-
-    this.selDistrito = -1;
+      this.ubigeoService.listaDistritos(this.selDepartamento, this.selProvincia).subscribe(
+            (x)  => this.distritos = x      
+      );
+      this.selDistrito = -1;
   }
 
 
