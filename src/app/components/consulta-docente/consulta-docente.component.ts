@@ -7,48 +7,56 @@ import { UbigeoService } from 'src/app/services/ubigeo.service';
 @Component({
   selector: 'app-consulta-docente',
   templateUrl: './consulta-docente.component.html',
-  styleUrls: ['./consulta-docente.component.css']
+  styleUrls: ['./consulta-docente.component.css'],
 })
 export class ConsultaDocenteComponent implements OnInit {
-
   //Ng model
-  nombre:string="";
-  dni:string="";
-  selDepartamento:string = "-1"; 
-  selProvincia:string = "-1"; 
-  selDistrito:number = -1;
+  nombre: string = '';
+  dni: string = '';
+  selDepartamento: string = '-1';
+  selProvincia: string = '-1';
+  selDistrito: number = -1;
 
-  
   //Ubigeo
-  departamentos: string[]  = [];
-  provincias: string[]  = [];
-  distritos: Ubigeo[]  = [];
+  departamentos: string[] = [];
+  provincias: string[] = [];
+  distritos: Ubigeo[] = [];
 
   //Grila
   docentes: Docente[] = [];
 
-  constructor(private ubigeoService: UbigeoService,private docenteService:DocenteService) { 
-      ubigeoService.listarDepartamento().subscribe(
-          (x) => this.departamentos = x
-      );
+  constructor(
+    private ubigeoService: UbigeoService,
+    private docenteService: DocenteService
+  ) {
+    ubigeoService
+      .listarDepartamento()
+      .subscribe((x) => (this.departamentos = x));
   }
 
-  cargaProvincia(){
-      this.ubigeoService.listaProvincias(this.selDepartamento).subscribe(
-            (x)  => this.provincias = x      
-      );
-      this.selProvincia = "-1";
-      this.distritos = [];
-      this.selDistrito = -1;
+  cargaProvincia() {
+    this.ubigeoService
+      .listaProvincias(this.selDepartamento)
+      .subscribe((x) => (this.provincias = x));
+    this.selProvincia = '-1';
+    this.distritos = [];
+    this.selDistrito = -1;
   }
-  cargaDistrito(){
-      this.ubigeoService.listaDistritos(this.selDepartamento, this.selProvincia).subscribe(
-            (x)  => this.distritos = x      
-      );
-      this.selDistrito = -1;
+  cargaDistrito() {
+    this.ubigeoService
+      .listaDistritos(this.selDepartamento, this.selProvincia)
+      .subscribe((x) => (this.distritos = x));
+    this.selDistrito = -1;
   }
 
+  listaDocente() {
+    this.docenteService
+      .listaDocente(this.nombre, this.dni, this.selDistrito)
+      .subscribe((x: any) => {
+        this.docentes = x.data;
+        alert(x.mensaje);
+      });
+  }
 
   ngOnInit(): void {}
-
 }
